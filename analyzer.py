@@ -1,5 +1,7 @@
 import os
 import json
+import requests # for Ollama
+
 from openai import OpenAI
 from dotenv import load_dotenv
 
@@ -7,15 +9,7 @@ from dotenv import load_dotenv
 load_dotenv()
 client = OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
 
-def analyze_audit_results(json_path):
-    # 1. Open the JSON report the 'reporter.py' created
-    try:
-        with open(json_path, 'r') as f:
-            audit_data = json.load(f)
-    except FileNotFoundError:
-        return "Error: Could not find the audit_summary.json file."
-
-    # Summarize for LLM - remove massive index lists
+def get_prompt(audit_data):
     summarized_data = {}
     for col, info in audit_data.items():
         summarized_data[col] = {
@@ -27,6 +21,7 @@ def analyze_audit_results(json_path):
             'date_issue': info['date_issue'],
             'is_categorical': info['is_categorical']
         }
+
 
     # 2. Create the prompt for the AI
     prompt = f"""
@@ -48,9 +43,64 @@ def analyze_audit_results(json_path):
     3. Which columns have inconsistencies, identify every row with issues ().
     4. Suggest what Pandas datatype inconsistent columns should be converted to. 
     """
+    return prompt
+
+def analyze_with_openai(json_path):
+    # 1. Open the JSON report
+    try:
+        with open(json_path, 'r') as f:
+            audit_data = json.load(f)
+    except FileNotFoundError:
+        return "Error: Could not find the audit_summary.json file."
+
+    # 2. Get the prompt (now using our new function)
+    prompt = get_prompt(audit_data)
+
     # 3. Call OpenAI and return the response
     response = client.chat.completions.create(
         model='gpt-4o-mini',
         messages=[{"role": "user", "content": prompt}]
     )
     return response.choices[0].message.content
+
+def analyze_with_ollama(json_path):
+    # 1. Open the JSON report
+    try:
+        with open(json_path, 'r') as f:
+            audit_data = json.load(f)
+    except FileNotFoundError:
+        return "Error: Could not find the audit_summary.json file."
+
+    # 2. Get the prompt (same as openai)
+    prompt = get_prompt(audit_data)
+
+    # 3. Call Ollama on local server for max privacy of data and return the response
+    ollama_payload = {
+        "model": "llama3.2",
+        "prompt": prompt,
+        "stream": False,
+        "options": {
+            "temperature": 0.1,
+            "num_predict": 1500
+        }    
+    }
+    
+    try:
+        response = requests.post("http://localhost:11434/api/generate", json=ollama_payload)
+        
+        if response.status_code == 200:
+            return response.json()['response']
+        else:
+            return f"Error: Ollama API returned status code {response.status_code}"
+    
+    except requests.exceptions.ConnectionError:
+        return "Error: Cannot connect to Ollama. Make sure it's running."
+    
+def analyze_audit_results(json_path, provider='openai'):
+    """Main function - routes to correct provider"""
+    if provider == 'openai':
+        return analyze_with_openai(json_path)
+    elif provider == 'ollama':
+        return analyze_with_ollama(json_path)
+    else:
+        return "Error: Invalid provider specified."

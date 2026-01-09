@@ -1,30 +1,34 @@
-# main.py is the director
+import argparse
 import auditor
 import reporter
 import analyzer
 
 def main():
-    target_file = 'test_data.csv'
+    # Parse command line arguments
+    parser = argparse.ArgumentParser(description='AI-Powered Data Auditor')
+    parser.add_argument('--model', choices=['openai', 'ollama'], default='openai',
+                        help='Choose AI provider: openai (needs API key) or ollama (local, free)')
+    parser.add_argument('--file', default='test_data.csv',
+                        help='Path to CSV file to audit')
+    args = parser.parse_args()
 
-    print("Step 1: Auditing...") 
-    # Runs logic in Auditor
-    results = auditor.run_audit(target_file)
+    print(f"Using AI provider: {args.model}")
+    print(f"Auditing file: {args.file}")
+
+    print("\nStep 1: Auditing...") 
+    results = auditor.run_audit(args.file)
 
     print("Step 2: Saving Report...")
-    # This sends that dictionary to reporter.py to save as JSON
     reporter.generate_report(results)
 
     print("Step 3: AI is Analyzing...")
-    # This tells analyzer.py to read the JSON and talk to OpenAI
-    # We pass the filename 'audit_summary.json' as the instruction
-    ai_summary = analyzer.analyze_audit_results('audit_summary.json')
+    ai_summary = analyzer.analyze_audit_results('audit_summary.json', provider=args.model)
     
     print("\n" + "="*30)
-    print("OpenAI-Powered Analysis")
+    print("AI-Powered Analysis")
     print("="*30)
     print(ai_summary)
     print("="*30)
 
-# The ignition switch
 if __name__ == "__main__":
     main()

@@ -8,14 +8,35 @@ Most "AI Data Assistants" require uploading sensitive raw data to a third-party 
 ## See related project that uses the same data: https://github.com/CharSiu8/insurance-claims-prediction-logistic-regression
 
 **This project solves these issues by:**
-1. **Local-First Auditing:** All statistical analysis (null detection, type inconsistency checks, date validation) happens locally using Pandas—raw data never leaves your machine.
+1. **Local-First Auditing:** All statistical analysis (null detection, type inconsistency checks, date validation) happens locally using Pandas—raw data never leaves your machine. 
 2. **Hybrid Intelligence:** Deterministic Python logic ensures 100% mathematical accuracy. AI is used only to *interpret* the pre-computed findings and suggest remediation plans.
 3. **Automation:** Built as a modular pipeline that can be integrated into automated workflows, rather than a manual "chat" interface.
+4. **Flexible AI Providers:** Choose between OpenAI (cloud) or Ollama (fully local)—enabling 100% offline operation for maximum privacy.
+
+## Quick Start
+
+### Option A: Fully Local (No API Key Needed)
+1. Install [Ollama](https://ollama.ai)
+2. Pull a model: `ollama pull llama3.2`
+3. Run: `python main.py --model ollama`
+
+### Option B: Cloud (OpenAI)
+1. Create `.env` file: `OPENAI_API_KEY=your-key-here`
+2. Run: `python main.py --model openai`
+
+### Command Line Options
+```bash
+python main.py --model ollama --file your_data.csv
+```
+| Argument | Options | Default | Description |
+|----------|---------|---------|-------------|
+| `--model` | `openai`, `ollama` | `openai` | AI provider to use |
+| `--file` | any CSV path | `test_data.csv` | File to audit |
 
 ## Tech Stack & Architecture
 - **Language:** Python 3.x
 - **Data Engineering:** Pandas
-- **AI Integration:** OpenAI API (GPT-4o-mini)
+- **AI Integration:** OpenAI API (GPT-4o-mini) or Ollama (Llama 3.2, local)
 - **Security:** python-dotenv (Environment Variable Management)
 - **Version Control:** Git/GitHub
 
@@ -25,7 +46,7 @@ Most "AI Data Assistants" require uploading sensitive raw data to a third-party 
 | `main.py` | Application entry point and pipeline coordinator |
 | `auditor.py` | Statistical engine—performs all data quality checks locally |
 | `reporter.py` | Serializes audit results to JSON |
-| `analyzer.py` | Sends audit metadata to OpenAI for interpretation |
+| `analyzer.py` | Routes to OpenAI or Ollama for AI interpretation |
 | `.env` | Secure storage for API keys (ignored by Git) |
 
 ### Data Flow
@@ -35,7 +56,11 @@ CSV File → auditor.py (local analysis) → reporter.py (JSON) → analyzer.py 
 
 ## Privacy Architecture
 - **What stays local:** Raw data, all statistical computations
-- **What is sent to OpenAI:** Only audit metadata (column names, data types, row indices with issues)—no actual data values are transmitted
+- **What is sent to AI:** Only audit metadata (column names, data types, row indices with issues)—no actual data values are transmitted
+- **With Ollama:** Everything stays local—zero data leaves your machine
+
+## Validation
+Tested against the same 10K insurance dataset used in my [Insurance Claims Prediction](https://github.com/CharSiu8/insurance-claims-prediction-logistic-regression) project. The auditor correctly identified the same 982 null values in `credit_score` and 957 in `annual_mileage` that I found through manual EDA—confirming the pipeline replicates expert-level data quality checks automatically.
 
 ## Impact
 By automating the Exploratory Data Analysis (EDA) phase, this tool reduces the "Data Cleaning" bottleneck—which typically takes up 80% of a Data Scientist's time—allowing for faster, safer insights.
