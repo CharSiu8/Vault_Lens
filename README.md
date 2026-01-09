@@ -5,6 +5,8 @@ In modern data environments, companies face two major hurdles: **Data Privacy (G
 
 Most "AI Data Assistants" require uploading sensitive raw data to a third-party cloud, risking privacy breaches. Furthermore, LLMs often "hallucinate" mathematical statistics.
 
+## See related project that uses the same data: https://github.com/CharSiu8/insurance-claims-prediction-logistic-regression
+
 **This project solves these issues by:**
 1. **Local-First Auditing:** All statistical analysis (null detection, type inconsistency checks, date validation) happens locally using Pandas—raw data never leaves your machine.
 2. **Hybrid Intelligence:** Deterministic Python logic ensures 100% mathematical accuracy. AI is used only to *interpret* the pre-computed findings and suggest remediation plans.
