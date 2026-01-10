@@ -1,0 +1,15 @@
+# Preparing to update the code to work as a package
+## Need to create account on pypi.org
+### ! rename this file to pyproject.toml
+#### Publish to PyPI (Python Package Index) so pip install vaultlens works
+##### GOAL:
+vaultlens/
+├── vaultlens/
+│   ├── __init__.py      ← tells Python "this is a package"
+│   ├── main.py
+│   ├── auditor.py
+│   ├── analyzer.py
+│   ├── reporter.py
+│   └── feedback.py
+├── pyproject.toml       ← tells pip how to install it
+└── README.md
