@@ -1,8 +1,8 @@
 import argparse
-import auditor
-import reporter
-import analyzer
-import feedback
+import vaultlens.auditor as auditor
+import vaultlens.reporter as reporter
+import vaultlens.analyzer as analyzer
+import vaultlens.feedback as feedback
 
 def main():
     # Parse command line arguments
