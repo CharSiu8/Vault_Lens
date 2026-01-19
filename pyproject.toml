@@ -29,6 +29,7 @@ dependencies = [
 "Homepage" = "https://github.com/CharSiu8/Vault_Lens"
 "GithubPage" = "https://charsiu8.github.io/Vault_Lens/"
 "Bug Tracker" = "https://github.com/yourusername/vaultlens/issues"
+"PyPI" = "https://pypi.org/project/Vault-Lens/"
 
 # find source code
 [tool.setuptools.packages.find]
