@@ -21,7 +21,12 @@ To ensure privacy and performance, VaultLens requires:
 * **Key Dependencies:** `pandas`, `openai`, `requests`, `python-dotenv`.
 
 ## License
-all rights reserved 
+
+© 2026 Steven Polino — All Rights Reserved
+
+Recruiters/employers welcome to clone and test for evaluation purposes.
+
+See [LICENSE](LICENSE) for full terms.
 
 ## Installation
 ```bash
