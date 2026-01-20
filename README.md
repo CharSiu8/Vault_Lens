@@ -20,6 +20,11 @@ To ensure privacy and performance, VaultLens requires:
 * **Operating System:** Windows, macOS, or Linux.
 * **Key Dependencies:** `pandas`, `openai`, `requests`, `python-dotenv`.
 
+## License
+AGPL-3.0 — Free for personal and educational use.
+
+For commercial licensing, contact: [your email]
+
 ## Installation
 ```bash
 pip install Vault-Lens
