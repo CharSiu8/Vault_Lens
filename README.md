@@ -21,9 +21,7 @@ To ensure privacy and performance, VaultLens requires:
 * **Key Dependencies:** `pandas`, `openai`, `requests`, `python-dotenv`.
 
 ## License
-AGPL-3.0 — Free for personal and educational use.
-
-For commercial licensing, contact: [your email]
+all rights reserved 
 
 ## Installation
 ```bash
