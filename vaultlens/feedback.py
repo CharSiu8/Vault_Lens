@@ -15,7 +15,7 @@ def send_feedback():
     # Ask user if they want to send feedback
     response = input("""
     ======================================================================
-    HEY, are you an Engineer or DataScientist? If so, send feedback! (y/n)
+    Are you an Engineer or DataScientist? If so, send feedback! (y/n)
     ====================================================================== 
     : """).strip().lower()
     
