@@ -1,4 +1,5 @@
 # VaultLens: Privacy-First Automated Data Observability
+Try it now: pip install vault-lens
 
 ## The Business Value
 In modern data environments, companies face two major hurdles: **Data Privacy (GDPR/HIPAA)** and **Data Integrity**.
