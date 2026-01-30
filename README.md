@@ -57,7 +57,7 @@ To ensure privacy and performance, VaultLens requires:
 * **Ollama:** For local AI analysis (recommended for private data)
 * **Key Dependencies:** `pandas`, `openai`, `requests`, `python-dotenv`.
 
-## Notes on COMPLIANCE
+## Notes on Compliance
 
 VaultLens is designed for privacy-focused data analysis but is **not certified for compliance** with HIPAA, GDPR, PCI DSS, or other regulatory frameworks. 
 
